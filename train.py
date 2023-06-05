@@ -22,7 +22,16 @@ if not os.path.exists(logdir):
 ### TRAINING THE MODEL ###
 env = gym.make("ALE/MarioBros-v5")
 env.reset()
-model = PPO('MlpPolicy', env, learning_rate=0.0001, verbose=1, tensorboard_log=logdir)
+model = PPO('CnnPolicy', 
+            env, 
+            learning_rate=1e-05,
+            # batch_size=32,
+            # n_epochs=20,
+            # gamma=0.99,
+            # clip_range=0.2,
+            # target_kl=0.01,
+            verbose=1, 
+            tensorboard_log=logdir)
 
 for i in range(max):
     model.learn(total_timesteps=timesteps, reset_num_timesteps=False, tb_log_name="PPO")
