@@ -1,21 +1,35 @@
-# RUN
-# A model from a certain timestamp is used to play mario bros which can be followed in a game window. 
+# DRL - Assignment2
+# Run a model trained on the SpaceInvadersNoFrameskip-v4 to play the game
+# Yorick Juffer, Alejandro Sánchez Roncero
 
-import gymnasium as gym
+import gym
 from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
+from stable_baselines3.common.vec_env import VecFrameStack
+from stable_baselines3.common.atari_wrappers import AtariWrapper
+from stable_baselines3.common.vec_env import VecTransposeImage
+from stable_baselines3.common.callbacks import EvalCallback
+from IPython import display
+import matplotlib
+import matplotlib.pyplot as plt
 
-models_dir = "models/PPO"
-env = gym.make("ALE/MarioBros-v5", render_mode="human")
-model_path = f"{models_dir}/500000.zip"
-model = PPO.load(model_path, env=env)
 
-# sets the model to play the game
+env_id = 'SpaceInvadersNoFrameskip-v4'
+
+model = PPO.load("ppo_space_invaders", print_system_info=True)
+env = model.get_env()
+
 env.metadata["render_fps"] = 30
-vec_env = model.get_env()
-obs = vec_env.reset()
-while True:
-    action, _state = model.predict(obs)
-    obs, rewards, dones, info = vec_env.step(action)
-    vec_env.render("human")
-
+episodes = 5
+for episode in range(1, episodes+1):
+    obs = env.reset()
+    done = False
+    score = 0
+    while not done:
+        action, _ = model.predict(obs)
+        obs, reward, done, info = env.step(action)
+        score += reward
+        # env.render()
+    print(f'Episode: {episode}, Score: {score}')
 env.close()

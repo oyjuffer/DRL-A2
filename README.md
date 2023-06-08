@@ -6,6 +6,7 @@ The run.py will display the resulting model at a certain timestamp via a game wi
 INSTALLS - These will install gym but also the game ROM. \
 pip install gymnasium \
 pip install "gymnasium[atari, accept-rom-license]" \
+pip install gym[mujoco]
 
 
 RESOURCES: \
