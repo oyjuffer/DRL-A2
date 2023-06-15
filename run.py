@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 
 env_id = 'SpaceInvadersNoFrameskip-v4'
-case_id = "01"
+case_id = "18"
 
 model = PPO.load("./models/{}/best_model.zip".format(case_id), print_system_info=True)
 env = model.get_env()
